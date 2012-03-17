@@ -1,0 +1,8 @@
+.autotest
+History.txt
+Manifest.txt
+README.txt
+Rakefile
+bin/live_f1
+lib/live_f1.rb
+test/test_live_f1.rb
