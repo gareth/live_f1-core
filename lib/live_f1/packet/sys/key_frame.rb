@@ -8,7 +8,7 @@ module LiveF1
 					data.reverse.unpack("B*").first.to_i(2)
         end
         
-        def inspect
+        def to_s
           "Keyframe #{number}"
         end
       end

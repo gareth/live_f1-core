@@ -1,9 +1,9 @@
 module LiveF1
   class Packet
     class Car < Packet
-      def to_s
-        "%-39s %s" % [ self.class.name + " (#{header.car})", data.inspect ]
-      end
+      # def inspect
+      #   "%-39s %s" % [ self.class.name + " (#{header.car})", data.inspect ]
+      # end
     end
   end
 end

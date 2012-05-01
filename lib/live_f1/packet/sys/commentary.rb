@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 module LiveF1
   class Packet
     class Sys
@@ -19,6 +21,10 @@ module LiveF1
 					# have been treated as Windows-1252 and then reconverted back to UTF-8.
 					# This is where we try and undo that.
 					data[2..-1].force_encoding("UTF-8").encode("Windows-1252").force_encoding("UTF-8")
+				end
+        
+				def to_s
+					"%s%s" % [line, (terminal? ? "" : "…")]
 				end
       end
     end

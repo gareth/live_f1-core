@@ -16,7 +16,7 @@ module LiveF1
 
     def run
       source.run do |packet|
-        # puts packet
+        # puts packet.inspect
         case packet
         when LiveF1::Packet::Sys::SessionStart
           yield LiveF1::Event::Start.new

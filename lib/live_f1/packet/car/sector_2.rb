@@ -4,6 +4,7 @@ module LiveF1
       class Sector2 < Car
         include Packet::Type::Short
         include Packet::Decryptable
+        include Packet::SectorTime
       end
     end
   end

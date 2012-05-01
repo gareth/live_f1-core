@@ -89,4 +89,20 @@ module PacketTypeExamples
       subject.raw_data.should == "encrypted"
     end
   end
+  
+  shared_examples LiveF1::Packet::SectorTime do
+    it "parses the data into a number of seconds" do
+      subject.set_data "43.5"
+      subject.seconds.should == 43.5
+      
+      subject.set_data "90.2"
+      subject.seconds.should == 90.2
+      
+      subject.set_data "1:35.784"
+      subject.seconds.should == 95.784
+      
+      subject.set_data ""
+      subject.seconds.should == nil
+    end
+  end
 end

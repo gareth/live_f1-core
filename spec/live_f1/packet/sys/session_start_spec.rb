@@ -13,7 +13,7 @@ describe LiveF1::Packet::Sys::SessionStart do
   let(:data)   { "\x005678" }
   let(:packet) do
     described_class.new(source, header).tap do |packet|
-      packet.data = data
+      packet.set_data data
     end
   end
   

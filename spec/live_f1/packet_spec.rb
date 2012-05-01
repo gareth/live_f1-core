@@ -80,12 +80,12 @@ describe LiveF1::Packet do
   describe "(instance methods)" do
     subject { packet }
     let(:source) { mock("source") }
-    let(:header) { mock("header") }
+    let(:header) { mock("header", :packet_type => 0) }
     let(:packet) { LiveF1::Packet::Spec::Base.new(source, header) }
 
-    describe "#to_s" do
+    describe "#inspect" do
       it "include the class name" do
-        subject.to_s.should include("LiveF1::Packet::Spec::Base")
+        subject.inspect.should include("Spec::Base")
       end
     end
   end

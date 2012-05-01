@@ -43,12 +43,16 @@ module LiveF1
       @header = header
     end
 
+    def set_data new_data
+      @data = new_data
+    end
+
     def to_s
-      "%-39s %s" % [ self.class.name, inspect ]
+      data.inspect
     end
     
     def inspect
-      data.inspect
+      "%-23s %s" % [self.class.name.sub(/LiveF1::Packet::/, ''), to_s ]
     end
   end
 end
@@ -56,5 +60,6 @@ end
 
 require_relative 'packet/header'
 require_relative 'packet/decryptable'
+require_relative 'packet/sector_time'
 require_relative 'packet/sys'
 require_relative 'packet/car'

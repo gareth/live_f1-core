@@ -9,7 +9,7 @@ module LiveF1
 					data.unpack("v").first
         end
         
-        def inspect
+        def to_s
           number
         end
       end

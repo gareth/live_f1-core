@@ -6,6 +6,7 @@ extend PacketTypeExamples
 describe LiveF1::Packet::Car::Sector2 do
   it_behaves_like LiveF1::Packet::Type::Short
   it_behaves_like LiveF1::Packet::Decryptable
+  it_behaves_like LiveF1::Packet::SectorTime
 
   subject { packet }
   
@@ -14,7 +15,7 @@ describe LiveF1::Packet::Car::Sector2 do
   let(:data)   { "" }
   let(:packet) do
     packet = described_class.new(source, header)
-    packet.data = data
+    packet.set_data data
     packet
   end
 end

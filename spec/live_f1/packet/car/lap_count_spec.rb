@@ -14,7 +14,7 @@ describe LiveF1::Packet::Car::LapCount do
   let(:data)   { "" }
   let(:packet) do
     packet = described_class.new(source, header)
-    packet.data = data
+    packet.set_data data
     packet
   end
 end
