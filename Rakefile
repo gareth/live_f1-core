@@ -2,6 +2,12 @@
 
 require 'rubygems'
 require 'hoe'
+require 'cucumber'
+require 'cucumber/rake/task'
+
+Cucumber::Rake::Task.new(:features) do |t|
+    t.cucumber_opts = "features --format pretty"
+end
 
 # Hoe.plugin :compiler
 # Hoe.plugin :gem_prelude_sucks
@@ -13,15 +19,17 @@ Hoe.plugin :bundler
 Hoe.plugin :git
 
 Hoe.spec 'live_f1' do
-  # HEY! If you fill these out in ~/.hoe_template/Rakefile.erb then
-  # you'll never have to touch them again!
-  # (delete this comment too, of course)
-
   developer('Gareth Adams', 'gareth.adams@gmail.com')
-  
-  dependency "rspec", nil, :dev
 
-  # self.rubyforge_name = 'live_f1x' # if different than 'live_f1'
+  dependency "hpricot", nil, :dev
+  dependency "rspec", nil, :dev
+  dependency "cucumber", nil, :dev
+  
+  dependency "guard-rspec", nil, :dev
+  dependency "guard-cucumber", nil, :dev
+  dependency "growl", nil, :dev
+
+  dependency "fakeweb", nil, :dev
 end
 
 # vim: syntax=ruby
