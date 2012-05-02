@@ -4,23 +4,25 @@
 
 == DESCRIPTION:
 
-FIXME (describe your package)
+LiveF1 provides an API to receive data from the official live timing servers. It uses the same data that's streamed to the live timing applet at www.formula1.com/live_timing/ - and needs you to have a corresponding account to decrypt the stream - but enables you to have a more fine-grained access to the numbers.
 
-== FEATURES/PROBLEMS:
+== FEATURES:
 
-* FIXME (list of features or problems)
+* Connects to the live timing stream and reports timing events which are detected
 
 == SYNOPSIS:
 
-  FIXME (code sample of usage)
+  At this stage of development there isn't much of an external API. Take a look at the features or dig into the code to find out more.
 
 == REQUIREMENTS:
 
-* FIXME (list of requirements)
+* Ruby 1.9.x
 
 == INSTALL:
 
-* FIXME (sudo gem install, anything else)
+The project uses Bundler, so get all the development dependencies with a simple
+
+  $ bundle install
 
 == DEVELOPERS:
 
@@ -35,7 +37,7 @@ and generate the RDoc.
 
 (The MIT License)
 
-Copyright (c) 2012 FIXME
+Copyright (c) 2012
 
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the
