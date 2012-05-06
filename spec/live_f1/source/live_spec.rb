@@ -44,17 +44,33 @@ describe LiveF1::Source::Live do
     end
     
     describe "#keyframe" do
+      let(:io) { mock(:io) }
+
       context "without a keyframe number" do
         it "returns a Keyframe source initialised with the correct URL and parent source" do
-          LiveF1::Source::Keyframe.should_receive(:new).with("http://live-timing.formula1.com/keyframe.bin", source)
+          source.should_receive(:open).with("http://live-timing.formula1.com/keyframe.bin") { io }
+          LiveF1::Source::Keyframe.should_receive(:new).with(io, source)
+
           source.keyframe
         end
       end
       
       context "with a keyframe number" do
         it "returns a Keyframe source initialised with the correct URL and parent source" do
-          LiveF1::Source::Keyframe.should_receive(:new).with("http://live-timing.formula1.com/keyframe_00012.bin", source)
+          source.should_receive(:open).with("http://live-timing.formula1.com/keyframe_00012.bin") { io }
+          LiveF1::Source::Keyframe.should_receive(:new).with(io, source)
+
           source.keyframe(12)
+        end
+      end
+      
+      context "on SocketError" do
+        before do
+          source.stub(:open).and_raise(SocketError)
+        end
+        
+        it "raises ConnectionError" do
+          lambda { source.keyframe }.should raise_error(LiveF1::Source::Live::ConnectionError)
         end
       end
     end

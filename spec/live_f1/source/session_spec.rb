@@ -28,10 +28,10 @@ describe LiveF1::Source::Session do
       end
     end
     
-    describe "#reset!" do
+    describe "#reset_decryption_salt!" do
       it "resets the decryption salt" do
         session.decryption_salt = 0x01010101
-        session.reset!
+        session.reset_decryption_salt!
         session.decryption_salt.should == 0x55555555
       end
     end

@@ -3,10 +3,9 @@ require 'spec_helper'
 
 extend PacketTypeExamples
 
-describe LiveF1::Packet::Car::Sector3 do
-  it_behaves_like LiveF1::Packet::Type::Short
+describe LiveF1::Packet::Car::PositionHistory do
+  it_behaves_like LiveF1::Packet::Type::Long
   it_behaves_like LiveF1::Packet::Decryptable
-  it_behaves_like LiveF1::Packet::SectorTime
 
   subject { packet }
   

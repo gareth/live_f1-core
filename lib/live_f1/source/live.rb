@@ -21,7 +21,10 @@ module LiveF1
       end
 
       def keyframe number = nil
-        Source::Keyframe.new "http://#{HOST}/#{keyframe_filename(number)}", self
+        io = open("http://#{HOST}/#{keyframe_filename(number)}")
+        Source::Keyframe.new io, self
+      rescue SocketError
+        raise ConnectionError, "Unable to connect to live timing server #{HOST}"
       end
 
       def decryption_key session_number
@@ -36,12 +39,13 @@ module LiveF1
       def auth
         response = Net::HTTP.post_form URI.parse("http://#{HOST}/reg/login.asp"), {"email" => username, "password" => password}
         CGI::Cookie.parse(response["Set-Cookie"])["USER"].first
-      # rescue # TODO: rescue a specific exception
-      #   # Implicit nil
       end
 
       def keyframe_filename number
         "keyframe#{ "_%05d" % number if number}.bin"
+      end
+      
+      class ConnectionError < RuntimeError
       end
     end
   end

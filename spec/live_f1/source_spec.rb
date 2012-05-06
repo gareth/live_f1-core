@@ -88,14 +88,14 @@ describe LiveF1::Source do
             packet.stub(:number) { 123 }
             [packet]
           end
-          let(:session) { mock(:session, :reset! => true) }
+          let(:session) { mock(:session, :reset_decryption_salt! => true) }
           
           before do
             source.stub(:session) { session }
           end
           
           it "resets the session's decryption data" do
-            session.should_receive(:reset!) { true }
+            session.should_receive(:reset_decryption_salt!) { true }
             source.run { }
           end
 

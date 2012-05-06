@@ -14,7 +14,7 @@ describe LiveF1::Packet::Sys::Timestamp do
   let(:data)   { "\x03\x00" }
   let(:packet) do
     packet = described_class.new(source, header)
-    packet.set_data data
+    packet.send :set_data, data
     packet
   end
 
@@ -22,12 +22,12 @@ describe LiveF1::Packet::Sys::Timestamp do
     # `data` for a KeyFrame packet represents a little-endian integer
     it "read a session number from the data" do
       # Binary: "00000000/00000011"
-      subject.set_data [3,0].pack("c*")
+      subject.send :set_data, [3,0].pack("c*")
       subject.number.should == 3
   
   
       # Binary: "00000001/00000011"
-      subject.set_data [3,1].pack("c*")
+      subject.send :set_data, [3,1].pack("c*")
       subject.number.should == 259
     end
   end

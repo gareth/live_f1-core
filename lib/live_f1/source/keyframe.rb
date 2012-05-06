@@ -3,15 +3,15 @@ require 'open-uri'
 module LiveF1
   class Source
     class Keyframe < Source
-      attr_reader :url, :parent
+      attr_reader :io, :parent
 
-      def initialize url, parent
-        @url = url
+      def initialize io, parent
+        @io = io
         @parent = parent
       end
 
       def read_bytes num
-        stream.read(num) or raise EOFError
+        io.read(num) or raise EOFError
       end
       
       def session
@@ -24,11 +24,6 @@ module LiveF1
       
       def decryption_key session_number
         parent.decryption_key(session_number)
-      end
-      
-      private
-      def stream
-        @io ||= open(url)
       end
     end
   end

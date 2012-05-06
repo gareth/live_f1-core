@@ -14,7 +14,7 @@ describe LiveF1::Packet::Car::Driver do
   let(:data)   { "" }
   let(:packet) do
     packet = described_class.new(source, header)
-    packet.set_data data
+    packet.send :set_data, data
     packet
   end
 end

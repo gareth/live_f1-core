@@ -3,20 +3,18 @@ require_relative '../event'
 
 module LiveF1
   class Packet
+    # The Unknown packet is a special placeholder packet for situations where a
+    # zero-length packet is delivered but seems to have no effect on the stream
     class Unknown < Packet
-      # def self.new source, header
-      #   # raise Header::UnknownPacket, "Packet for #{header.inspect} should not be instantiated"
-      # end
-
-      def length
-        0
-      end
+      include Packet::Type::Special
 
       def to_s
         "Unknown packet type #{header.packet_type}" + (header.car > 0 ? " for car #{header.car}" : "")
       end
     end
 
+    # A Header uses 2 bytes of data from a live timing stream to determine all
+    # the necessary information about the packet which follows it.
     class Header < Struct.new(:data, :packet_type, :car, :event_type)
       def self.from_source source, event_type
         bytes = source.read_bytes(2)
@@ -29,8 +27,6 @@ module LiveF1
 
       def car?
         !car.zero?
-      rescue
-        raise self.inspect
       end
 
       def packet_klass
@@ -52,9 +48,9 @@ module LiveF1
             when 10 then Packet::Car::PitLap2
             when 11 then Packet::Car::Sector3
             when 12 then Packet::Car::PitLap3
-            when 13 then nil
+            when 13 then Packet::Car::NumPits
             when 14 then nil
-            when 15 then nil
+            when 15 then Packet::Car::PositionHistory
             end
           when Event::PRACTICE
             case packet_type
@@ -108,7 +104,7 @@ module LiveF1
           when 14 then nil # Packet::Unknown
           when 15 then nil # Packet::Unknown
           end
-        end or raise UnexpectedPacket, "Unexpected #{car? ? 'car' : 'sys'} packet type #{packet_type.inspect} for event type #{event_type.inspect}"
+        end or raise UnexpectedPacket, "Unexpected #{car? ? 'car' : 'sys'} packet type #{packet_type.inspect} for #{Event::Type.name_for event_type} event"
       end
 
       class MissingEventType < RuntimeError

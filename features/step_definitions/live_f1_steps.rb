@@ -2,9 +2,13 @@ $:.unshift(File.dirname(__FILE__) + '/../../lib')
 require 'live_f1'
 require 'cucumber/rspec/doubles'
 
-Given /^there is a live timing session in progress$/ do
+Given /^the live timing session is about to start$/ do
   # fixture_session '2012.04.bahrain.practice.2'
   fixture_session '2012.03.china.qualifying'
+end
+
+Given /^the live timing session has been completed$/ do
+  fixture_session '2012.05.bahrain.race.post'
 end
 
 When /^I successfully connect to the live timing service$/ do
@@ -58,12 +62,4 @@ end
 #   socket = mock("socket")
 #   socket.stub(:read) { receiver.packets.shift }
 #   TCPSocket.stub(:open) { socket }
-# end
-#
-# module MockPacket
-#   class << self
-#     def event_start
-#       [" \x00"]
-#     end
-#   end
 # end

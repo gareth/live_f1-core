@@ -12,6 +12,7 @@ gem "guard-rspec", ">=0", :group => [:development, :test]
 gem "guard-cucumber", ">=0", :group => [:development, :test]
 gem "growl", ">=0", :group => [:development, :test]
 gem "fakeweb", ">=0", :group => [:development, :test]
+gem "hoe-yard", ">=0", :group => [:development, :test]
 gem "rdoc", "~>3.10", :group => [:development, :test]
 gem "hoe", "~>2.16", :group => [:development, :test]
 

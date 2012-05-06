@@ -1,39 +1,41 @@
-= live_f1
+# @markup rdoc
 
-* FIXME (url)
+= LiveF1
 
-== DESCRIPTION:
+* TODO: URL
 
-LiveF1 provides an API to receive data from the official live timing servers. It uses the same data that's streamed to the live timing applet at www.formula1.com/live_timing/ - and needs you to have a corresponding account to decrypt the stream - but enables you to have a more fine-grained access to the numbers.
+== DESCRIPTION
 
-== FEATURES:
+LiveF1 provides an API to receive data from the official live timing servers. It uses the same data that's streamed to the live timing applet at www.formula1.com/live_timing - and needs you to have a corresponding account to decrypt the stream - but enables you to have a more fine-grained access to the numbers.
+
+== FEATURES
 
 * Connects to the live timing stream and reports timing events which are detected
 
-== SYNOPSIS:
+== SYNOPSIS
 
-  At this stage of development there isn't much of an external API. Take a look at the features or dig into the code to find out more.
+At this stage of development there isn't much of an external API. Take a look at the features or dig into the code to find out more.
 
-== REQUIREMENTS:
+== REQUIREMENTS
 
 * Ruby 1.9.x
 
-== INSTALL:
+== INSTALL
 
 The project uses Bundler, so get all the development dependencies with a simple
 
   $ bundle install
 
-== DEVELOPERS:
+== DEVELOPERS
 
-After checking out the source, run:
+After checking out the source, run
 
   $ rake newb
 
 This task will install any missing dependencies, run the tests/specs,
 and generate the RDoc.
 
-== LICENSE:
+== LICENSE
 
 (The MIT License)
 
@@ -45,7 +47,7 @@ a copy of this software and associated documentation files (the
 without limitation the rights to use, copy, modify, merge, publish,
 distribute, sublicense, and/or sell copies of the Software, and to
 permit persons to whom the Software is furnished to do so, subject to
-the following conditions:
+the following conditions
 
 The above copyright notice and this permission notice shall be
 included in all copies or substantial portions of the Software.
@@ -57,3 +59,11 @@ IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
 CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
 TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+== DATA LICENSE
+
+Data consumed using this library is and remains property of Formula One
+Management Limited ('FOM'). It would be a VERY BAD IDEA to use it for anything
+other than personal, non-commercial use. 
+
+http://www.formula1.com/termsandconditions.html

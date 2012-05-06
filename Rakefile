@@ -19,6 +19,7 @@ task :default => [:spec, :features]
 # Hoe.plugin :rubyforge
 Hoe.plugin :bundler
 Hoe.plugin :git
+Hoe.plugin :yard
 
 Hoe.spec 'live_f1' do
   developer('Gareth Adams', 'gareth.adams@gmail.com')
@@ -32,6 +33,7 @@ Hoe.spec 'live_f1' do
   dependency "growl", nil, :dev
 
   dependency "fakeweb", nil, :dev
+  dependency "hoe-yard", nil, :dev
 end
 
 # vim: syntax=ruby

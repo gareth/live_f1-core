@@ -1,7 +1,18 @@
 module LiveF1
+  # A Packet represents a raw instruction sent from the live timing server to
+  # the live timing applet.
+  # 
+  # It is represented in the data stream by a variable-length series of bytes,
+  # always starting with a 2-byte "header" and then a number of other bytes
+  # depending on the specific data being represented.
   class Packet
+    # There are 4 broad categories of packet, where the only difference is how
+    # we work out how many bytes of data are expected from the stream
     module Type
       module Short
+        # Short packets use 4 bits of the header data to represent the packet
+        # length. Normally this would mean a maximum length of 15, except if a
+        # short packet says it has a length of 15 it actually has a length of 0
         def length
           l = (header.data >> 3)
           l == 0x0f ? 0 : l
@@ -9,27 +20,34 @@ module LiveF1
       end
 
       module Long
+        # Long packets use all 7 bits of the header data to represent the packet
+        # length. This allows for a maximum packet length of 127 bytes.
         def length
           header.data
         end
       end
 
       module Special
+        # Special packets never have any additional data.
         def length
           0
         end
       end
 
       module Timestamp
+        # Timestamp packets always contain 2 bytes of data.
         def length
           2
         end
       end
     end
 
-    attr_reader :source, :header
+    attr_reader :source
+    attr_reader :header
     attr_accessor :data
 
+    # First extracts a Header from the given source and then extracts the
+    # packet it represents, based on the given event type.
     def self.from_source source, event_type
       header = Header.from_source(source, event_type)
       packet = header.packet_klass.new source, header
@@ -43,16 +61,20 @@ module LiveF1
       @header = header
     end
 
-    def set_data new_data
-      @data = new_data
-    end
-
     def to_s
       data.inspect
     end
     
     def inspect
       "%-23s %s" % [self.class.name.sub(/LiveF1::Packet::/, ''), to_s ]
+    end
+
+    private
+    # Since some classes override +data=+ to deal with encrypted data, here's a
+    # method that can be used in rare cases (e.g. testing) where we need to
+    # bypass that process
+    def set_data new_data
+      @data = new_data
     end
   end
 end

@@ -103,6 +103,8 @@ describe LiveF1::Packet::Header do
           described_class.new(data, 10, 1, LiveF1::Event::RACE).packet_klass.should == LiveF1::Packet::Car::PitLap2
           described_class.new(data, 11, 1, LiveF1::Event::RACE).packet_klass.should == LiveF1::Packet::Car::Sector3
           described_class.new(data, 12, 1, LiveF1::Event::RACE).packet_klass.should == LiveF1::Packet::Car::PitLap3
+          described_class.new(data, 13, 1, LiveF1::Event::RACE).packet_klass.should == LiveF1::Packet::Car::NumPits
+          described_class.new(data, 15, 1, LiveF1::Event::RACE).packet_klass.should == LiveF1::Packet::Car::PositionHistory
 
           described_class.new(data, 0, 1, LiveF1::Event::PRACTICE).packet_klass.should == LiveF1::Packet::Car::PositionUpdate
           described_class.new(data, 1, 1, LiveF1::Event::PRACTICE).packet_klass.should == LiveF1::Packet::Car::Position
@@ -127,8 +129,6 @@ describe LiveF1::Packet::Header do
           described_class.new(data, 9, 1, LiveF1::Event::QUALIFYING).packet_klass.should == LiveF1::Packet::Car::Sector3
 
           pending "remaining packets" do
-            described_class.new(data, 13, 1, LiveF1::Event::RACE).packet_klass.should == LiveF1::Packet::Car::NumPits
-            described_class.new(data, 15, 1, LiveF1::Event::RACE).packet_klass.should == LiveF1::Packet::Car::PositionHistory
 
             described_class.new(data, 15, 1, LiveF1::Event::PRACTICE).packet_klass.should == LiveF1::Packet::Car::PositionHistory
 

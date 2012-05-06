@@ -3,7 +3,7 @@ require 'rspec/core/shared_context'
 
 module PacketTypeExamples
   extend RSpec::Core::SharedContext
-  
+
   shared_examples LiveF1::Packet::Type::Long do
     subject { described_class.new(source, header) }
 
@@ -61,20 +61,20 @@ module PacketTypeExamples
       subject.length.should == 2
     end
   end
-  
+
   shared_examples LiveF1::Packet::Decryptable do
     subject { described_class.new(source, header) }
-    
+
     # let(:decryption_key) { "AF661706" }
     # let(:data) { "\xBC\x9A\x1E\x9AH>\xCB\xE4\xFE\xE0v!h\r\xF9" }
 
     let(:source) { mock("source") }
     let(:header) { mock("header", :packet_klass => described_class, :data => "0100000".to_i(2)) }
-    
+
     before do
       source.stub(:decrypt) { "plaintext" }
     end
-    
+
     it "decrypts data passed to it" do
       source.should_receive(:decrypt).with("encrypted") { "plaintext" }
 
@@ -82,27 +82,43 @@ module PacketTypeExamples
 
       subject.data.should == "plaintext"
     end
-    
+
     it "sets the packet's raw data" do
       subject.data = "encrypted"
 
       subject.raw_data.should == "encrypted"
     end
   end
-  
+
   shared_examples LiveF1::Packet::SectorTime do
-    it "parses the data into a number of seconds" do
-      subject.set_data "43.5"
-      subject.seconds.should == 43.5
-      
-      subject.set_data "90.2"
-      subject.seconds.should == 90.2
-      
-      subject.set_data "1:35.784"
-      subject.seconds.should == 95.784
-      
-      subject.set_data ""
-      subject.seconds.should == nil
+    context "with numeric time values" do
+      it "parses the data into a number of seconds" do
+        subject.send :set_data, "43.5"
+        subject.seconds.should == 43.5
+
+        subject.send :set_data, "90.2"
+        subject.seconds.should == 90.2
+
+        subject.send :set_data, "1:35.784"
+        subject.seconds.should == 95.784
+      end
+    end
+
+    context "with empty values" do
+      it "doesn't have a seconds value" do
+        subject.send :set_data, ""
+        subject.seconds.should == nil
+      end
+    end
+
+    context "with a stop value" do
+      before do
+        subject.send :set_data, "STOP"
+      end
+
+      it "doesn't have a seconds value" do
+        subject.seconds.should be_nil
+      end
     end
   end
 end
