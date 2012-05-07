@@ -9,6 +9,7 @@ Cucumber::Rake::Task.new(:features) do |t|
     t.cucumber_opts = "features --format pretty"
 end
 
+desc "Run the entire test suite"
 task :default => [:spec, :features]
 
 # Hoe.plugin :compiler
