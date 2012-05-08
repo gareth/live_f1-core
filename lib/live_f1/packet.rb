@@ -17,6 +17,10 @@ module LiveF1
           l = (header.data >> 3)
           l == 0x0f ? 0 : l
         end
+        
+        def spare_bits
+          3
+        end
       end
 
       module Long
@@ -25,6 +29,10 @@ module LiveF1
         def length
           header.data
         end
+        
+        def spare_bits
+          0
+        end
       end
 
       module Special
@@ -32,12 +40,20 @@ module LiveF1
         def length
           0
         end
+        
+        def spare_bits
+          7
+        end
       end
 
       module Timestamp
         # Timestamp packets always contain 2 bytes of data.
         def length
           2
+        end
+        
+        def spare_bits
+          7
         end
       end
     end
@@ -65,8 +81,21 @@ module LiveF1
       data.inspect
     end
     
+    def spare_bits
+      0
+    end
+    
+    def spare_data
+      "%0#{spare_bits}b" % (header.data & (2 ** spare_bits - 1))
+    end
+    
     def inspect
-      "%-23s %s" % [self.class.name.sub(/LiveF1::Packet::/, ''), to_s ]
+      "[%7s] %-23s %s" % [spare_data, leader, to_s ]
+      "%-23s %s" % [leader, to_s ]
+    end
+    
+    def leader
+      self.class.name.sub(/LiveF1::Packet::/, '')
     end
 
     private

@@ -1,9 +1,9 @@
 module LiveF1
   class Packet
     class Car < Packet
-      # def inspect
-      #   "%-39s %s" % [ self.class.name + " (#{header.car})", data.inspect ]
-      # end
+      def leader
+        super.gsub(/Car/) { "Car(%02d)" % header.car }
+      end
     end
   end
 end

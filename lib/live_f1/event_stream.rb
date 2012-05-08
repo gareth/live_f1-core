@@ -1,5 +1,6 @@
 require_relative 'source'
 require_relative 'event'
+require 'pp'
 
 module LiveF1
   class EventStream
@@ -15,6 +16,8 @@ module LiveF1
     end
 
     def run
+      timestamp = 0
+      weathers = {}
       source.run do |packet|
         # puts packet.inspect
         case packet

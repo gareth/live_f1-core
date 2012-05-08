@@ -5,10 +5,6 @@ module LiveF1
         include Packet::Type::Short
         include Packet::Decryptable
         include Packet::SectorTime
-
-        def to_s
-          [header.data.to_s(2), data].inspect
-        end
       end
     end
   end
