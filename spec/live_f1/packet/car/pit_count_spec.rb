@@ -3,7 +3,7 @@ require 'spec_helper'
 
 extend PacketTypeExamples
 
-describe LiveF1::Packet::Car::NumPits do
+describe LiveF1::Packet::Car::PitCount do
   it_behaves_like LiveF1::Packet::Type::Short
   it_behaves_like LiveF1::Packet::Decryptable
 
