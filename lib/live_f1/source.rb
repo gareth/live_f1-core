@@ -9,7 +9,7 @@ module LiveF1
   #
   # These instructions relate to a low-level manipulation of the screen which
   # would be displayed by the live timing Java applet. For example, when a
-  # car's sector 1 time is recieved, the applet needs to clear the other two
+  # car's sector 1 time is received, the applet needs to clear the other two
   # sector times from the previous lap:
   #
   #   Driver        Lap       S1    S2    S3
