@@ -32,7 +32,7 @@ describe LiveF1::Source::Live do
 
     describe "#socket" do
       it "opens a TCPSocket to the live timing server" do
-        TCPSocket.should_receive(:open).with("live-timing.formula1.com", 4321) { mock("socket") }
+        TCPSocket.should_receive(:open).with("80.231.178.249", 4321) { mock("socket") }
         source.send(:socket)
       end
 
@@ -48,7 +48,7 @@ describe LiveF1::Source::Live do
 
       context "without a keyframe number" do
         it "returns a Keyframe source initialised with the correct URL and parent source" do
-          source.should_receive(:open).with("http://live-timing.formula1.com/keyframe.bin") { io }
+          source.should_receive(:open).with("http://80.231.178.249/keyframe.bin") { io }
           LiveF1::Source::Keyframe.should_receive(:new).with(io, source)
 
           source.keyframe
@@ -57,7 +57,7 @@ describe LiveF1::Source::Live do
 
       context "with a keyframe number" do
         it "returns a Keyframe source initialised with the correct URL and parent source" do
-          source.should_receive(:open).with("http://live-timing.formula1.com/keyframe_00012.bin") { io }
+          source.should_receive(:open).with("http://80.231.178.249/keyframe_00012.bin") { io }
           LiveF1::Source::Keyframe.should_receive(:new).with(io, source)
 
           source.keyframe(12)
@@ -76,7 +76,7 @@ describe LiveF1::Source::Live do
     end
 
     describe "#decryption_key" do
-      let(:decryption_url) { "http://live-timing.formula1.com/reg/getkey/1234.asp?auth=ABC123DEF" }
+      let(:decryption_url) { "http://80.231.178.249/reg/getkey/1234.asp?auth=ABC123DEF" }
 
       before do
         source.stub(:auth) { "ABC123DEF" }
@@ -90,7 +90,7 @@ describe LiveF1::Source::Live do
 
     describe "#auth" do
       before do
-        FakeWeb.register_uri :post, "http://live-timing.formula1.com/reg/login", :set_cookie => "USER=abcdef"
+        FakeWeb.register_uri :post, "http://80.231.178.249/reg/login", :set_cookie => "USER=abcdef"
       end
 
       it "loads authentication from the live timing servers" do

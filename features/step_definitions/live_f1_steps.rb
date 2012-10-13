@@ -34,14 +34,14 @@ def fixture_session name
   sessions.each do |session|
     keyframe_data = YAML.load(File.read(File.join(session, "keyframes.yaml")))
     keyframe_data.each do |filename, data|
-      url = "http://live-timing.formula1.com/#{filename}"
+      url = "http://80.231.178.249/#{filename}"
       FakeWeb.register_uri(:get, url, :body => data)
     end
 
     session_number = File.basename(session)
     keyfile = File.join(session,'session.key')
-    FakeWeb.register_uri(:post, 'http://live-timing.formula1.com/reg/login', :set_cookie => "USER=abc123def")
-    FakeWeb.register_uri(:get,  "http://live-timing.formula1.com/reg/getkey/#{session_number}.asp?auth=abc123def", :body => keyfile)
+    FakeWeb.register_uri(:post, 'http://80.231.178.249/reg/login', :set_cookie => "USER=abc123def")
+    FakeWeb.register_uri(:get,  "http://80.231.178.249/reg/getkey/#{session_number}.asp?auth=abc123def", :body => keyfile)
   end
 end
 

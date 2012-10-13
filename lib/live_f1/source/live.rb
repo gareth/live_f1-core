@@ -8,7 +8,7 @@ module LiveF1
   class Source
     class Live < Source
 
-      HOST = "live-timing.formula1.com"
+      HOST = "80.231.178.249"
       PORT = 4321
 
       attr_reader :username, :password
