@@ -1,3 +1,36 @@
 #!/usr/bin/env ruby
 
-abort "you need to write me"
+require 'optparse'
+require 'highline'
+
+options = {}
+OptionParser.new do |opts|
+  opts.separator ""
+  opts.separator "Specific options:"
+
+  opts.on("-u USERNAME", "--username", "Specify the formula1.com live timing username") do |username|
+    options[:username] = username
+  end
+  opts.on("-p [PASSWORD]", "--password", "Specify the formula1.com live timing password. Omitting the password will cause live-f1 to prompt for it.") do |password|
+    unless password
+      prompt = HighLine.new
+      password = prompt.ask("Password: ") { |q| q.echo = false }
+    end
+    options[:password] = password
+  end
+
+  opts.on_tail("-h", "--help", "Show this message") do
+    puts opts
+    exit
+  end
+
+end.parse!
+
+$: << File.join(File.dirname(__FILE__), '..', 'lib')
+require 'live_f1'
+
+source = LiveF1::Source::Live.new(options[:username], options[:password])
+source.log_dir = "./data"
+source.run do |packet|
+  puts packet.inspect
+end

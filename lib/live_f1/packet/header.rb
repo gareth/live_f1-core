@@ -16,13 +16,18 @@ module LiveF1
     # A Header uses 2 bytes of data from a live timing stream to determine all
     # the necessary information about the packet which follows it.
     class Header < Struct.new(:data, :packet_type, :car, :event_type)
+      attr_reader :bytes
+
       def self.from_source source, event_type
         bytes = source.read_bytes(2)
         raise "No data from #{source.inspect}" unless bytes.to_s.length == 2
         bits = bytes.to_s.reverse.unpack("B*").first
         _, data, packet_type, car = bits.match(/^(.{7})(.{4})(.{5})$/).to_a.map { |s| s.to_i(2) }
 
-        new(data, packet_type, car, event_type)
+        new(data, packet_type, car, event_type).tap do |header|
+          # TODO: Maybe need a nicer way of setting this
+          header.instance_variable_set "@bytes", bytes
+        end
       end
 
       def car?

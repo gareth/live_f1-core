@@ -1,7 +1,7 @@
 module LiveF1
   # A Packet represents a raw instruction sent from the live timing server to
   # the live timing applet.
-  # 
+  #
   # It is represented in the data stream by a variable-length series of bytes,
   # always starting with a 2-byte "header" and then a number of other bytes
   # depending on the specific data being represented.
@@ -17,7 +17,7 @@ module LiveF1
           l = (header.data >> 3)
           l == 0x0f ? 0 : l
         end
-        
+
         def spare_bits
           3
         end
@@ -29,7 +29,7 @@ module LiveF1
         def length
           header.data
         end
-        
+
         def spare_bits
           0
         end
@@ -40,7 +40,7 @@ module LiveF1
         def length
           0
         end
-        
+
         def spare_bits
           7
         end
@@ -51,7 +51,7 @@ module LiveF1
         def length
           2
         end
-        
+
         def spare_bits
           7
         end
@@ -61,6 +61,8 @@ module LiveF1
     attr_reader :source
     attr_reader :header
     attr_accessor :data
+
+    alias bytes data
 
     # First extracts a Header from the given source and then extracts the
     # packet it represents, based on the given event type.
@@ -80,20 +82,22 @@ module LiveF1
     def to_s
       data.inspect
     end
-    
+
     def spare_bits
       0
     end
-    
+
+    # Returns the bits of the header data which aren't used to determine the
+    # packet length
     def spare_data
       "%0#{spare_bits}b" % (header.data & (2 ** spare_bits - 1))
     end
-    
+
     def inspect
       "[%7s] %-23s %s" % [spare_data, leader, to_s ]
       "%-23s %s" % [leader, to_s ]
     end
-    
+
     def leader
       self.class.name.sub(/LiveF1::Packet::/, '')
     end

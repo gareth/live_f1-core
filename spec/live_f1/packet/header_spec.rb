@@ -8,18 +8,21 @@ describe LiveF1::Packet::Header do
 
     it "reads 2 bytes from the source" do
       described_class.stub(:new)
+
       source.should_receive(:read_bytes).with(2) { "  " }
+
       described_class.from_source(source, nil)
     end
 
     it "generates a Header with the correct attributes" do
-      # Header data is packed into 2 bytes
+      # Header data is packed into 2 bytes, little-endian (bytes reversed)
       # MASK: bbbcccccaaaaaaab/bbb
       # a:            0000001      = 1
       # b:                   0/011 = 3 (wrapped)
       # c:       00111             = 7
       bits = "0110011100000010"
       source.stub(:read_bytes) { [bits].pack("B*") }
+
       described_class.should_receive(:new).with(1, 3, 7, event_type) { stub("header") }
 
       described_class.from_source(source, event_type)

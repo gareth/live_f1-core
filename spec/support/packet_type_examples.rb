@@ -76,8 +76,6 @@ module PacketTypeExamples
     end
 
     it "decrypts data passed to it" do
-      source.should_receive(:decrypt).with("encrypted") { "plaintext" }
-
       subject.data = "encrypted"
 
       subject.data.should == "plaintext"

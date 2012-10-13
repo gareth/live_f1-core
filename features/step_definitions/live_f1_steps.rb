@@ -12,7 +12,7 @@ Given /^the live timing session has been completed$/ do
 end
 
 When /^I successfully connect to the live timing service$/ do
-  @stream = LiveF1::EventStream.live 'gareth@example.com', 'swordfish'
+  @stream = LiveF1::Source::Live.new 'gareth@example.com', 'swordfish'
 end
 
 Then /^I should receive packets of data$/ do
@@ -20,13 +20,14 @@ Then /^I should receive packets of data$/ do
   @stream.run do |packet|
     packets << packet
   end
-  packets.should include_a(LiveF1::Event::Start)
+  packets.should include_a(LiveF1::Packet::Sys::SessionStart)
 end
 
 def fixture_session name
   fixture_base = File.expand_path(File.join(File.dirname(__FILE__),'../fixtures/sessions',name))
 
   stream_filename = File.join(fixture_base,'session.bin')
+  # Stubbing a Socket with a File may have consequences
   TCPSocket.stub(:open) { File.open(stream_filename) }
 
   sessions = Dir[File.join(fixture_base,'*')].select { |f| File.directory? f }
@@ -39,7 +40,7 @@ def fixture_session name
 
     session_number = File.basename(session)
     keyfile = File.join(session,'session.key')
-    FakeWeb.register_uri(:post, 'http://live-timing.formula1.com/reg/login.asp', :set_cookie => "USER=abc123def")
+    FakeWeb.register_uri(:post, 'http://live-timing.formula1.com/reg/login', :set_cookie => "USER=abc123def")
     FakeWeb.register_uri(:get,  "http://live-timing.formula1.com/reg/getkey/#{session_number}.asp?auth=abc123def", :body => keyfile)
   end
 end

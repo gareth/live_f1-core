@@ -16,14 +16,14 @@ module LiveF1
         	WIND_DIRECTION    = 7
         end
         include Metric
-        
+
         include Packet::Type::Short
         include Packet::Decryptable
-        
+
         def to_s
           "%-18s - %s" % [Metric.name_for(metric), data]
         end
-        
+
         def metric
           header.data & 0b0111
         end

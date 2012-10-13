@@ -30,7 +30,7 @@ describe LiveF1::Packet do
     let(:source) { mock("source", :read_bytes => "") }
     let(:header) { mock("header", :packet_klass => LiveF1::Packet::Spec::Base) }
     let(:packet) { mock_packet :length => 7 }
-    let(:event_type) { 3 }
+    let(:event_type) { LiveF1::Event::QUALIFYING }
     before do
       LiveF1::Packet::Header.stub(:from_source).with(source, event_type) { header }
     end

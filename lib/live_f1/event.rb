@@ -10,7 +10,7 @@ module LiveF1
       QUALIFYING = 3
     end
     include Type
-    
+
     module TrackStatus
       extend LiveF1::Enum
     	GREEN_FLAG          = 1
@@ -21,5 +21,3 @@ module LiveF1
     end
   end
 end
-
-require_relative 'event/start'
