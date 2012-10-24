@@ -11,18 +11,18 @@ OptionParser.new do |opts|
   opts.separator ""
   opts.separator "Specific options:"
 
-  opts.on("-u USERNAME", "--username", "Specify the formula1.com live timing username") do |username|
+  opts.on("-f LOGFILE", "--file", "Replays the given previously recorded .f1 data file (if not specified, will attempt to connect to the live timing server)") do |logfile|
+    options[:logfile] = logfile
+  end
+  opts.on("-u USERNAME", "--username", "For live connections, specify the formula1.com live timing username") do |username|
     options[:username] = username
   end
-  opts.on("-p [PASSWORD]", "--password", "Specify the formula1.com live timing password. Omitting the password will cause live-f1 to prompt for it.") do |password|
+  opts.on("-p [PASSWORD]", "--password", "For live connections, specify the formula1.com live timing password. Omitting the password will cause live-f1 to prompt for it.") do |password|
     unless password
       prompt = HighLine.new
       password = prompt.ask("Password: ") { |q| q.echo = false }
     end
     options[:password] = password
-  end
-  opts.on("-f LOGFILE", "--file", "F1 log file to replay") do |logfile|
-    options[:logfile] = logfile
   end
   opts.on("-d", "--debug", "Display bit data from each data packet's header") do
     LiveF1.debug = true
