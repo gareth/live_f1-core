@@ -1,5 +1,3 @@
-# @markup rdoc
-
 = LiveF1
 
 * TODO: URL
@@ -25,15 +23,6 @@ At this stage of development there isn't much of an external API. Take a look at
 The project uses Bundler, so get all the development dependencies with a simple
 
   $ bundle install
-
-== DEVELOPERS
-
-After checking out the source, run
-
-  $ rake newb
-
-This task will install any missing dependencies, run the tests/specs,
-and generate the RDoc.
 
 == LICENSE
 
@@ -64,6 +53,6 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 Data consumed using this library is and remains property of Formula One
 Management Limited ('FOM'). It would be a VERY BAD IDEA to use it for anything
-other than personal, non-commercial use. 
+other than personal, non-commercial use.
 
 http://www.formula1.com/termsandconditions.html
