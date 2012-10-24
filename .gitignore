@@ -3,3 +3,4 @@
 .yardoc/
 doc/
 data/
+*.gem
