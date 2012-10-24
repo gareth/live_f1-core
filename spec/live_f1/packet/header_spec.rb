@@ -132,7 +132,6 @@ describe LiveF1::Packet::Header do
           described_class.new(data, 9, 1, LiveF1::Event::QUALIFYING).packet_klass.should == LiveF1::Packet::Car::Sector3
 
           pending "remaining packets" do
-
             described_class.new(data, 15, 1, LiveF1::Event::PRACTICE).packet_klass.should == LiveF1::Packet::Car::PositionHistory
 
             described_class.new(data, 10, 1, LiveF1::Event::QUALIFYING).packet_klass.should == LiveF1::Packet::Car::LapCount

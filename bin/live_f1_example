@@ -1,0 +1,74 @@
+#!/usr/bin/env ruby
+require 'rubygems'
+require 'optparse'
+require 'highline'
+
+$: << File.join(File.dirname(__FILE__), '..', 'lib')
+require 'live_f1'
+
+options = {}
+OptionParser.new do |opts|
+  opts.separator ""
+  opts.separator "Specific options:"
+
+  opts.on("-u USERNAME", "--username", "Specify the formula1.com live timing username") do |username|
+    options[:username] = username
+  end
+  opts.on("-p [PASSWORD]", "--password", "Specify the formula1.com live timing password. Omitting the password will cause live-f1 to prompt for it.") do |password|
+    unless password
+      prompt = HighLine.new
+      password = prompt.ask("Password: ") { |q| q.echo = false }
+    end
+    options[:password] = password
+  end
+  opts.on("-f LOGFILE", "--file", "F1 log file to replay") do |logfile|
+    options[:logfile] = logfile
+  end
+  opts.on("-d", "--debug", "Display bit data from each data packet's header") do
+    LiveF1.debug = true
+  end
+
+  opts.on_tail("-h", "--help", "Show this message") do
+    puts opts
+    exit
+  end
+
+end.parse!
+
+if options[:logfile]
+
+  timestamp = nil
+  packets = []
+
+  source = LiveF1::Source::Log.new(File.open(options[:logfile]))
+  source.run do |packet|
+    packets << packet
+    case packet
+    when LiveF1::Packet::Sys::Timestamp
+      t_start = timestamp || packet.number
+      t_end = packet.number
+      t_diff = t_end - t_start
+
+      # The interval is the difference in time between the last 2 timestamps, divided
+      # by the number of packets between the timestamps. This is then divided by 4 to
+      # speed up the replay
+      interval = t_diff.to_f / (packets.length) / 8
+      packets.pop # Remove the timestamp packet from the output queue
+      while p = packets.shift
+        puts p.inspect
+        sleep interval
+      end
+      timestamp = packet.number
+    end
+  end
+
+else
+
+  source = LiveF1::Source::Live.new(options[:username], options[:password])
+  source.log_dir = "./data"
+  source.run do |packet|
+    puts packet.inspect
+  end
+
+end
+

@@ -44,7 +44,7 @@ describe LiveF1::Source::Live do
     end
 
     describe "#keyframe" do
-      let(:io) { mock(:io) }
+      let(:io) { mock(:io, :read => "", :rewind => 0) }
 
       context "without a keyframe number" do
         it "returns a Keyframe source initialised with the correct URL and parent source" do
@@ -85,6 +85,11 @@ describe LiveF1::Source::Live do
       it "uses the live source's authorization to request decryption key from the live timing servers" do
         source.should_receive(:open).with(decryption_url) { mock(:io, :read => "5caff01d") }
         source.decryption_key(1234).should == "5caff01d".to_i(16)
+      end
+
+      it "raises a ConnectionError when decryption key service returns 0" do
+        source.should_receive(:open).with(decryption_url) { mock(:io, :read => "0") }
+        lambda { source.decryption_key(1234) }.should raise_error(LiveF1::Source::Live::ConnectionError, /session key/)
       end
     end
 

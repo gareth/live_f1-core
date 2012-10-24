@@ -1,3 +1,5 @@
+require 'live_f1/debug'
+
 module LiveF1
   # A Packet represents a raw instruction sent from the live timing server to
   # the live timing applet.
@@ -7,7 +9,11 @@ module LiveF1
   # depending on the specific data being represented.
   class Packet
     # There are 4 broad categories of packet, where the only difference is how
-    # we work out how many bytes of data are expected from the stream
+    # we work out how many bytes of data are expected from the stream.
+    #
+    # As described in the Header documentation, the 2 header bytes are split
+    # into information about the packet type and corresponding car, along with
+    # up to 7 bits of payload data.
     module Type
       module Short
         # Short packets use 4 bits of the header data to represent the packet
@@ -53,7 +59,7 @@ module LiveF1
         end
 
         def spare_bits
-          7
+          0
         end
       end
     end
@@ -94,8 +100,11 @@ module LiveF1
     end
 
     def inspect
-      "[%7s] %-23s %s" % [spare_data, leader, to_s ]
-      "%-23s %s" % [leader, to_s ]
+      if LiveF1.debug
+        "[%7s] %-23s %s" % [spare_data, leader, to_s]
+      else
+        "%-23s %s" % [leader, to_s]
+      end
     end
 
     def leader

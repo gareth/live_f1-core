@@ -8,12 +8,12 @@ module LiveF1
       class Timestamp < Sys
         include Packet::Type::Timestamp
         include Packet::Decryptable
-        
+
         # The number of seconds since the start of the session.
         def number
 					data.unpack("v").first
         end
-        
+
         def to_s
           number
         end

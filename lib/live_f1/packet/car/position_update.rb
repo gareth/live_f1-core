@@ -3,7 +3,7 @@ module LiveF1
     class Car
       class PositionUpdate < Car
         include Packet::Type::Special
-        
+
         def to_s
           header.data.to_s
         end

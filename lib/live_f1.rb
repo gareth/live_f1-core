@@ -1,4 +1,5 @@
 require_relative 'live_f1/source'
+require_relative 'live_f1/debug'
 
 # =Formula 1 live timing
 #
@@ -28,5 +29,4 @@ require_relative 'live_f1/source'
 # See bin/live-f1 for usage examples
 #
 module LiveF1
-  VERSION = '0.0.1'
 end

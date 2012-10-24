@@ -1,4 +1,5 @@
 require_relative 'source/live'
+require_relative 'source/log'
 require_relative 'source/session'
 require_relative 'packet'
 
