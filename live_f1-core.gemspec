@@ -6,7 +6,7 @@ Gem::Specification.new do |gem|
   gem.email         = ["g@rethada.ms"]
   gem.description   = %q{Parses raw events from the Formula1.com live timing stream}
   gem.summary       = %q{LiveF1 provides an API to receive data from the official live timing servers. It uses the same data that's streamed to the live timing applet at www.formula1.com/live_timing - and needs you to have a corresponding account to decrypt the stream - but enables you to have a more fine-grained access to the numbers}
-  gem.homepage      = ""
+  gem.homepage      = "https://github.com/gareth/live_f1-core"
 
   gem.files         = `git ls-files`.split($\)
   gem.executables   = gem.files.grep(%r{^bin/}).map{ |f| File.basename(f) }
