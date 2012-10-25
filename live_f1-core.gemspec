@@ -15,12 +15,9 @@ Gem::Specification.new do |gem|
   gem.require_paths = ["lib"]
   gem.version       = LiveF1::VERSION
 
-  gem.add_development_dependency "hpricot"
-  gem.add_development_dependency "rspec"
-  gem.add_development_dependency "cucumber"
-  gem.add_development_dependency "guard-rspec"
-  gem.add_development_dependency "guard-cucumber"
-  gem.add_development_dependency "growl"
-  gem.add_development_dependency "fakeweb"
-  gem.add_development_dependency "rb-fsevent"
+  gem.add_development_dependency 'rspec', '~> 2.7'
+  gem.add_development_dependency 'cucumber', '~> 1.0'
+
+  gem.add_development_dependency 'rake', '>= 0.9'
+  gem.add_development_dependency 'fakeweb', '~> 1.2', '>= 1.2.4'
 end
