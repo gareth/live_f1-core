@@ -25,7 +25,6 @@ module LiveF1
             socket.read(num) or raise EOFError
           end
         rescue Timeout::Error, Errno::ETIMEDOUT => e
-          log.flush
           socket.write("\n")
           socket.flush
           retry
@@ -35,6 +34,7 @@ module LiveF1
       def keyframe number = nil
         io = open("http://#{HOST}/#{keyframe_filename(number)}")
         log.keyframe(number, io.read) if number
+        log.flush
         io.rewind
         Source::Keyframe.new io, self
       rescue SocketError
@@ -42,6 +42,7 @@ module LiveF1
       end
 
       def decryption_key session_number
+        return if session_number.zero?
         key = open("http://#{HOST}/reg/getkey/#{session_number}.asp?auth=#{auth}").read.to_i(16)
         raise ConnectionError, "Unable to access session key for session #{session_number}. This could indicate incorrect credentials or an issue with the formula1.com key server" if key.zero?
         key
@@ -67,10 +68,10 @@ module LiveF1
           yield packet
         end
       rescue Errno::ECONNRESET
-        log.flush
+        log.reset
         retry
       rescue Exception
-        log.flush
+        log.reset
         raise
       end
 
@@ -96,11 +97,13 @@ module LiveF1
         "keyframe#{ "_%05d" % number if number}.bin"
       end
 
-      class LogProxy
+      # Wraps a logfile in methods which mean the caller doesn't need to know
+      # if a log is currently open or not
+      class LogProxy # :nodoc:
         class << self
           def start session_number
-            flush
-            @log = Log.new session_number
+            reset
+            @log = Log.new session_number unless session_number.zero?
           end
 
           [:key, :packet, :keyframe].each do |m|
@@ -109,8 +112,14 @@ module LiveF1
             end
           end
 
+          # Writes the current logfile to disk
           def flush
             @log.flush if @log
+          end
+
+          # Writes the current logfile to disk and then closes the log
+          def reset
+            flush
             @log = nil
           end
         end
@@ -118,13 +127,14 @@ module LiveF1
 
       class Log
         class << self
-          attr_reader :dir
+          attr_accessor :dir
 
           def dir= log_directory
             @dir = Pathname.new(log_directory).join(Date.today.strftime("%Y%m%d"))
             FileUtils.mkdir_p(@dir)
           end
 
+          # Has logging been set up (do we have a log directory to write to)?
           def active?
             !!@dir
           end
@@ -139,18 +149,22 @@ module LiveF1
           }
         end
 
-        def key k
-          @data[:key] = k
+        # Adds a decryption key to this log
+        def key key
+          @data[:key] = key
         end
 
-        def packet p
-          @data[:bytes] << p.header.bytes << p.bytes
+        # Adds a packet to this log's bytestream
+        def packet packet
+          @data[:bytes] << packet.header.bytes << packet.bytes
         end
 
-        def keyframe n, k
-          @data[:keyframes][n] = k
+        # Adds keyframe `n` to this log
+        def keyframe number, keyframe_bytes
+          @data[:keyframes][number] = keyframe_bytes
         end
 
+        # Writes this logfile to disk
         def flush
           File.open(@filename, "w") { |f| f.write YAML.dump(@data) } if @filename
         end
