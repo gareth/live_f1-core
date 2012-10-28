@@ -20,7 +20,7 @@ module LiveF1
 
       def self.from_source source, event_type
         bytes = source.read_bytes(2)
-        raise "No data from #{source.inspect}" unless bytes.to_s.length == 2
+        raise MissingData, "No data from #{source.inspect}" unless bytes.to_s.length == 2
         bits = bytes.to_s.reverse.unpack("B*").first
         _, data, packet_type, car = bits.match(/^(.{7})(.{4})(.{5})$/).to_a.map { |s| s.to_i(2) }
 
@@ -121,6 +121,9 @@ module LiveF1
 
       # An unknown packet is one that we expect (from experience) to appear in the data stream but don't know its purpose
       class UnknownPacket < RuntimeError
+      end
+
+      class MissingData < EOFError
       end
     end
   end
