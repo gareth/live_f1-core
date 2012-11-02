@@ -1,0 +1,12 @@
+= LiveF1 Changelog
+
+== 0.0.2
+
+* Removed example binary to separate repo at http://github.com/gareth/live_f1-stream
+* Fixed data logging issue so data will be saved into a replayable file if Source::LiveF1#log_dir is set
+* Handled error which appeared when streaming in the run-up to a session
+* Other bugfixes and refactoring
+
+== 0.0.1
+
+* Birthday!

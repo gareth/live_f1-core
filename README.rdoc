@@ -24,10 +24,6 @@ The project uses Bundler, so get all the development dependencies with a simple
 
   $ bundle install
 
-== KNOWN ISSUES
-
-* Currently live binary data is not being logged for playback
-
 == LICENSE
 
 (The MIT License)
