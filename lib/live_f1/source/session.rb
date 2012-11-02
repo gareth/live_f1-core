@@ -27,6 +27,9 @@ module LiveF1
       # Decrypts the given string using this session's decryption_key and the
       # current state of the decryption_salt.
       def decrypt input
+        # Sometimes we don't have a decryption key, e.g. Notice is a
+        # decryptable packet but sometimes appears between sessions
+        return input unless decryption_key
         input.bytes.map do |b|
           self.decryption_salt = (decryption_salt >> 1) ^ ((decryption_salt & 0x01).zero? ? 0 : decryption_key)
           b ^ (decryption_salt & 0xff)
