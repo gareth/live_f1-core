@@ -14,6 +14,8 @@ LiveF1 provides an API to receive data from the official live timing servers. It
 
 At this stage of development there isn't much of an external API. Take a look at the features or dig into the code to find out more.
 
+The easiest way to use this gem is with the corresponding live_f1-stream gem, which contains an executable.
+
 == REQUIREMENTS
 
 * Ruby 1.9.x
